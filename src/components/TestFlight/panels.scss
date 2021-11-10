@@ -1,0 +1,46 @@
+.panels {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: 180vw;
+    height: 100%;
+    transform: translateX(-50%) skewX(-35deg);
+    clip-path: circle(100%);
+    z-index: 1;
+    background: var(--lightgray);
+}
+
+.panels .panel1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--panel-width);
+    transform: scaleY(0);
+    transform-origin: top;
+    background: var(--darkblue);
+}
+
+.panels .panel1:nth-child(even) {
+    transform-origin: bottom;
+}
+
+.panels .panel1:nth-child(2) {
+    left: calc(var(--panel-width) - 1px);
+}
+
+.panels .panel1:nth-child(3) {
+    left: calc(calc(var(--panel-width) * 2) - 2px);
+}
+
+.panels .panel1:nth-child(4) {
+    left: calc(calc(var(--panel-width) * 3) - 4px);
+}
+
+.panels .panel1:nth-child(5) {
+    left: calc(calc(var(--panel-width) * 4) - 5px);
+}
+
+.panels .panel1:nth-child(6) {
+    left: calc(calc(var(--panel-width) * 5) - 6px);
+}

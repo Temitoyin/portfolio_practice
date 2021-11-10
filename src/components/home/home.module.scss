@@ -1,0 +1,17 @@
+.container{
+    .layer1{
+        height: 50vh;
+    }
+    .layer2{
+        height: 50vh;
+    }
+    .layer3{
+        height: 50vh;
+        .circle{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: black;
+        }
+    }
+}
