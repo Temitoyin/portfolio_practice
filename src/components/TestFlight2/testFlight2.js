@@ -1,97 +1,27 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-restricted-globals */
 import React, { useEffect, useRef, useState } from "react";
 import Icon from "../Icon/icon";
 import { Link } from "react-scroll";
+import img1 from "../../img/demo1/profile.JPG";
+import img2 from "../../img/demo1/lagos.jpg";
 import styles from "./testFlight2.module.scss";
 import gsap from "gsap";
-import LocomotiveScroll from "locomotive-scroll";
+import "../../js/Math.js";
+import RGBShiftEffect from "../../js/RGBShiftEffect.js";
+import imagesLoaded from "imagesloaded";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const TestFlight2 = () => {
   gsap.registerPlugin(ScrollTrigger);
-  let cursor = useRef(null);
   let header = useRef(null);
   let imageRef = useRef(null);
   let worksContainer = useRef(null);
   let mainContainer = useRef(null);
-  const scrollEl = document.querySelector("[data-scroll-container]");
+  let effectWrapper = useRef(null);
+  let effectLinks;
+
   let scroll;
-
-  useEffect(() => {
-    // if(scrollEl){
-    //  scroll = new LocomotiveScroll({
-    //    el: mainContainer.current,
-    //   smooth: true,
-    //   // lerp: 0.06,
-    //   // tablet: {
-    //   //   breakpoint: 768,
-    //   // },
-    // });
-    // }
-    // ScrollTrigger.scrollerProxy(scroll.el, {
-    //   scrollTop(value) {
-    //     return arguments.length
-    //       ? scroll.scrollTo(value, 0, 0)
-    //       : scroll.scroll.instance.scroll.y;
-    //   },
-    //   getBoundingClientRect() {
-    //     return {
-    //       top: 0,
-    //       left: 0,
-    //       width: window.innerWidth,
-    //       height: window.innerHeight,
-    //     };
-    //   },
-    // });
-    // scroll.on("scroll", ScrollTrigger.update);
-  }, [scrollEl]);
-
-  console.log(scrollEl, "scrolling");
-
-  // useEffect(() => {
-  //   const svg = document.querySelector("#svg");
-  //   const point = svg.createSVGPoint();
-  //   window.addEventListener("mousemove", (event) => {
-  //     point.x = event.x;
-  //     point.y = event.y;
-  //     const svgPoint = point.matrixTransform(svg.getScreenCTM().inverse());
-  //     gsap.set(cursor.current, {
-  //       css: {
-  //         cx: svgPoint.x,
-  //         cy: svgPoint.y,
-  //       },
-  //       ease: "power2.in",
-  //       duration: 1,
-  //       delay: 0.1,
-  //     });
-  //   });
-  //   window.addEventListener("scroll", () => {
-  //     gsap.set(imageRef.current, {
-  //       css: {
-  //         position: "fixed",
-  //       },
-  //     });
-  //   });
-  //   return {};
-  // }, []);
-  useEffect(() => {
-    header.current.addEventListener("mouseover", () => {
-      gsap.to(cursor.current, {
-        css: {
-          r: 80,
-        },
-        duration: 0.8,
-      });
-    });
-    header.current.addEventListener("mouseleave", () => {
-      gsap.to(cursor.current, {
-        css: {
-          r: 0,
-        },
-        duration: 1,
-      });
-    });
-  }, []);
 
   useEffect(() => {
     const items = gsap.utils.toArray("#project");
@@ -101,7 +31,6 @@ const TestFlight2 = () => {
         let imageData = e.target.getAttribute("data-image");
         gsap.set(imageRef.current, {
           attr: { src: imageData },
-          // duration: 1.5,
           ease: "power2.in",
         });
       });
@@ -109,7 +38,6 @@ const TestFlight2 = () => {
         let imageData = e.target.getAttribute("data-image");
         gsap.set(imageRef.current, {
           attr: { src: imageData },
-          // duration: 1.5,
           ease: "power2.in",
         });
       });
@@ -123,7 +51,6 @@ const TestFlight2 = () => {
         });
         gsap.set(imageRef.current, {
           ease: "power2.in",
-          // delay: 2,
         });
       });
       el.addEventListener("mousemove", (e) => {
@@ -147,33 +74,63 @@ const TestFlight2 = () => {
         });
       });
     });
+    items.forEach((el) => {
+      gsap.from(el, {
+        opacity: 0,
+        y: -50,
+        duration: 0.8,
+        ease: "power2.in",
+        scrollTrigger: {
+          trigger: el,
+          toggleActions: "play complete reverse reset",
+          end: "10px 75%",
+          start: "0 89%",
+          scrub: 0.2,
+        },
+      });
+    });
   }, []);
 
-  // const split = new SplitText("#header__text");
   useEffect(() => {
-    const anchors = gsap.utils.toArray("#anchor");
-    gsap.to(anchors, {
-      color: "#22313f",
-      // x: 100,
-      duration: 0.2,
-      ease: "power2.in",
+    window.addEventListener("scroll", () => {
+      gsap.set(imageRef.current, {
+        css: {
+          position: "fixed",
+        },
+      });
+    });
+    // gsap.to("#aboutlink, #contactlink, #projectlink, #logo", {
+    //   color: "#22313f",
+    //   duration: 0.2,
+    //   ease: "power2.in",
+    //   scrollTrigger: {
+    //     trigger: "#works__container",
+    //     start: "top 10%",
+    //     toggleActions: "play complete none reset",
+    //   },
+    // });
+    gsap.from("#greeting, #location, #intro__text", {
+      opacity: 0,
+      y: -50,
+      stagger: 0.2,
+      duration: 1,
+      ease: "power1.in",
       scrollTrigger: {
-        trigger: "#works",
-        scrub: true,
-        // markers: true,
+        trigger: header.current,
+        start: "top 30%",
+        end: "bottom 90%",
+        toggleActions: "play complete none none",
       },
     });
-    gsap.to("#logo", {
-      color: "#22313f",
-      duration: 0.2,
-      ease: "power2.in",
-      scrollTrigger: {
-        trigger: "#works",
-        start: "top 700",
-        scrub: true,
-        // markers: true,
-      },
-    });
+    // gsap.to("#contactlink", {
+    //   css: {
+    //     borderBottom: "1px solid #22313f",
+    //   },
+    //   scrollTrigger: {
+    //     trigger: "#contact",
+    //     toggleActions: "play reverse reverse reset",
+    //   },
+    // });
     gsap.from("#navigation", {
       opacity: 0,
       y: -100,
@@ -182,8 +139,53 @@ const TestFlight2 = () => {
     });
   }, []);
 
+  useEffect(() => {
+    window.onload = function () {
+      gsap.fromTo(
+        "#loader",
+        {
+          //  y: -1000,
+          opacity: 1,
+          duration: "12s",
+          css: {
+            backgroundColor: "black",
+          },
+        },
+        {
+          y: 0,
+          opacity: 0,
+          zIndex: -1,
+        }
+      );
+    };
+    const container = document.body;
+    effectLinks = gsap.utils.toArray("#effect");
+    const preloadImages = () => {
+      return new Promise((resolve, reject) => {
+        new imagesLoaded(document.querySelectorAll("img"), resolve);
+      });
+    };
+
+    // And then.._
+    // Preload images
+
+    preloadImages().then(() => {
+      // Remove the loader
+      document.body.classList.remove("loading");
+      const effect = new RGBShiftEffect(
+        container,
+        effectWrapper.current,
+        effectLinks,
+        {
+          strength: 0.25,
+        }
+      );
+    });
+  }, []);
+
   return (
     <>
+      <div id="loader" className={styles.loader}></div>
       <div
         className={styles.testFlight2}
         data-scroll-container
@@ -198,30 +200,40 @@ const TestFlight2 = () => {
           </div>
           <div className={styles.right}>
             <ul>
-              <li
-                id="anchor"
-                // onClick={() =>
-                //   scroll.scrollTo(document.querySelector("[data-scroll-works]"))
-                // }
-              >
-                <Link to="works__container" smooth={true}>
-                  Works
+              <li id="projectlink">
+                <Link
+                  to="works__container"
+                  activeClass={styles.linkActive}
+                  smooth={true}
+                  spy={true}
+                >
+                  Projects
                 </Link>
               </li>
-              <li id="anchor">
-                <Link to="about" smooth={true}>
+              <li id="aboutlink">
+                <Link
+                  to="about"
+                  activeClass={styles.linkActive}
+                  smooth={true}
+                  spy={true}
+                >
                   About
                 </Link>
               </li>
               <li
-                id="anchor"
+                id="contactlink"
                 onClick={() =>
                   scroll.scrollTo(
                     document.querySelector("[data-scroll-contact]")
                   )
                 }
               >
-                <Link to="contact" smooth={true}>
+                <Link
+                  to="contact"
+                  smooth={true}
+                  activeClass={styles.linkActive}
+                  spy={true}
+                >
                   Contact
                 </Link>
               </li>
@@ -229,49 +241,70 @@ const TestFlight2 = () => {
           </div>
         </nav>
         <div className={styles.topHeader} ref={header}>
-          {/* <svg
-            width="100%"
-            viewBox="113 128 972 600"
-            preserveAspectRatio="xMidYMid meet"
-            id="svg"
+          <div
+            className={styles.mainText}
+            id="effectWrapper"
+            ref={effectWrapper}
           >
-            <defs>
-              <mask id="mask">
-                <circle fill="#F0F5F9" cx="150" cy="150" r="0" ref={cursor} />
-              </mask>
-            </defs>
-            <image
-              mask="url(#mask)"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              xlinkHref="https://images.unsplash.com/photo-1602357280104-742c517a1d82?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2750&q=80"
-            ></image>
-            <div className={styles.div} mask="url(#mask)"></div>
-          </svg> */}
-
-          <div className={styles.mainText}>
-            <p className={styles.greeting} id="gretting">
+            <p className={styles.greeting} id="greeting">
               Hello
             </p>
-            <p className={styles.info} id="header__text">
-              <p>
-                <span className={styles.introduction}> Temi Toyin</span> is an
-                interesting Front<br></br>
+            <div id="header__text">
+              <p id="intro__text">
+                <a
+                  aria-label="link-1"
+                  target="_blank"
+                  rel="noopener"
+                  draggable="false"
+                  className={styles.link}
+                  id="effect"
+                >
+                  <span className={styles.info} id="location">
+                    Temitoyin
+                  </span>{" "}
+                  <img className="content__img" src={img1} alt="img1" />
+                </a>{" "}
+                is an interesting Front-End developer from<br></br>
               </p>
-              <p>-End developer from</p>
-              <p className={styles.location} id="location">
-                Lagos Nigeria
-              </p>{" "}
-            </p>
+              <p id="intro__text">
+                <a
+                  aria-label="link-1"
+                  target="_blank"
+                  rel="noopener"
+                  draggable="false"
+                  className={styles.link}
+                  id="effect"
+                >
+                  <span className={styles.location} id="location">
+                    Lagos Nigeria
+                  </span>{" "}
+                  <img className="content__img" src={img2} alt="img1" />
+                </a>
+                .
+              </p>
+            </div>
           </div>
         </div>
-        <div className={styles.works} data-scroll-works id="works__container">
+        <section
+          className={styles.works}
+          data-scroll-works
+          id="works__container"
+          ref={worksContainer}
+        >
           <h2 id="works" className={styles.heading}>
             My Projects
           </h2>
-          <img src="" id="projectImg" ref={imageRef} />
+          <img
+            src=""
+            id="projectImg"
+            ref={imageRef}
+            rel="preload"
+            alt="project"
+          />
           <a
             href="https://distracted-euler-df595f.netlify.app/"
             target="_blank"
+            rel="noreferrer"
           >
             <div
               className={styles.project}
@@ -321,7 +354,7 @@ const TestFlight2 = () => {
               <Icon name="arrow" className={styles.arrow} />
             </span>
           </div>
-          <a href="https://new.konga.com/" target="_blank">
+          <a href="https://new.konga.com/" target="_blank" rel="noreferrer">
             <div
               className={styles.project}
               id="project"
@@ -371,31 +404,54 @@ const TestFlight2 = () => {
               </span>
             </div>
           </a>
-        </div>
-        <div className={styles.about} data-scroll-about id="about">
+        </section>
+        <section className={styles.about} data-scroll-about id="about">
           <div className={styles.about__heading}>
             <h3 id="aboutStuff">About</h3>
-            <div>
+            <div className={styles.about__info}>
               <p>
-                There are a couple of thi lkjaldlja fj aldjfla lkfja fajljdjf
-                akjdlfaj ajdkjflja ajkfdla asdha dhf sdkfk dkalksd ahdka adkalkd
-                dkaj ddk adjadj adjd djadjsa
+                Hello,<br></br>
+                I'm Temitoyin Ayorinde a front-end developer with over 2 years
+                experience in creating mobile responsive, accessible
+                applications. I enjoy turning complex problems into simple,
+                beautiful and intuitive designs.
               </p>
               <p>
-                There are a couple of thi lkjaldlja fj aldjfla lkfja fajljdjf
-                akjdlfaj ajdkjfljakjadk ahjahd shjdhah jadh a hajhd ajhdja jahd
-                djahaj ajkfdla asdha dhf sdkfk dkalksd ahdka adkalkd dkaj ddk
-                adjadj adjd djadjsa
+                When I'm not writing code, I spend my time playing basketball,
+                reading, watching anime, cooking and generally having a good
+                time.
               </p>
               <p>
-                There are a couple of thi lkjaldlja fj aldjfla lkfja fajljdjf
-                akjdlfaj ajdkjflja ajkfdla asdha dhf sdkfk dkalksd ahdka adkalkd
-                dkaj ddk adjadj adjd djadjsa
+                If you need some inspiration on something to watch, read or
+                listen to checkout my links
               </p>
+            </div>
+            <div className={styles.about__links}>
+              <a
+                href="https://myanimelist.net/animelist/Toyin18"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <p>My aime list</p>
+              </a>
+              <a
+                href="https://www.goodreads.com/review/list/142870885?ref=nav_mybooks"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <p>Good reads</p>
+              </a>
+              <a
+                href="https://open.spotify.com/playlist/7mTZwyStZ8GK0WIu8Euehn"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <p>Spotify playlist</p>
+              </a>
             </div>
           </div>
           <div className={styles.toolStack}>
-            <h4>A couple of the tools I know</h4>
+            <h4>My Stack</h4>
             <div class={styles.categories}>
               <div class="front-end">
                 <h3>Front end</h3>
@@ -403,11 +459,13 @@ const TestFlight2 = () => {
                   <li>HTML5</li>
                   <li>CSS3</li>
                   <li>JavaScript</li>
+                  <li>TypeScript</li>
                   <li>Bootstrap</li>
                   <li>React</li>
                   <li>Redux</li>
                   <li>Next.js</li>
                   <li>Three.js</li>
+                  <li>Gsap</li>
                 </ul>
               </div>
               <div class="back-end">
@@ -436,8 +494,13 @@ const TestFlight2 = () => {
               </div>
             </div>
           </div>
-        </div>
-        <footer class={styles.footer} data-scroll-contact id="contact">
+        </section>
+        <section
+          className={styles.contact}
+          data-scroll-contact
+          id="contact"
+        ></section>
+        <footer class={styles.footer}>
           <div class={styles.footer__copyright}>
             Temitoyin © <span id="date"></span> Copyright
           </div>

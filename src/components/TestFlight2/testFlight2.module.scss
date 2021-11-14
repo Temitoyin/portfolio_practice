@@ -1,28 +1,60 @@
 $col-one: #f0f5f9;
-$col-two: #22313f;
-
+$col-two: #090910;
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+.loader{
+  width: 100vw;
+  background-color: black;
+  position: fixed;
+  height: 100vh;
+  z-index: 3;
+}
 .testFlight2 {
+  canvas {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.link img {
+  display: none;
+}
+
   position: relative;
   h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Recoleta", sans-serif;
-  color: $col-one;
-}
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    // font-family: "Recoleta", sans-serif;
+    font-family: 'Roboto Mono', monospace;
+    color: $col-one;
+  }
 
-p,
-li {
-  font-family: "Work Sans", sans-serif;
-}
+  p,
+  li {
+    font-family: "Work Sans", sans-serif;
+  }
 }
 .topHeader {
   width: 100vw;
   position: relative;
   height: 100vh;
-  background: rgb(0, 0, 0);
+// background: #3B3B3B;
+// background: -webkit-linear-gradient(top, #3B3B3B, #FFFFFF);
+// background: -moz-linear-gradient(top, #3B3B3B, #FFFFFF);
+// background: linear-gradient(to bottom, #3B3B3B, #FFFFFF);
   svg {
     height: 100%;
     width: 100vw;
@@ -36,25 +68,22 @@ li {
       height: 100vh;
     }
   }
-
 }
 
 .navigation {
   position: fixed;
   width: 100vw;
-  // top: -200px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
+  background-color: white;
   .left {
     margin-left: 40px;
     h1 {
-      color: $col-one;
+      font-family: 'Anton', sans-serif;
+      color: $col-two;
       cursor: pointer;
-      &:hover {
-        color: #ff8474;
-      }
     }
   }
   .right {
@@ -65,11 +94,11 @@ li {
       list-style: none;
       width: 20vw;
       li {
-        color: $col-one;
+        color: $col-two;
         cursor: pointer;
-        &:hover {
-          color: #ff8474;
-        }
+      }
+      .linkActive{
+        border-bottom: 2px solid $col-two;
       }
     }
   }
@@ -84,22 +113,38 @@ li {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: left;
+  z-index: 2;
   h2 {
     font-size: 80px;
   }
-  .greeting{
+  .greeting {
     font-size: 30px;
     margin-bottom: 30px;
   }
-  .info, .location{
-    font-size: 50px;
+  .info,
+  .location {
+    font-size: 70px;
   }
-  p{
-    color: $col-one;
+  p {
+    font-size: 50px;
+    background-color: #000000;
+background-image: linear-gradient(147deg, #000000 0%, #434343 74%);
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin: 0;
   }
-  .introduction,.location{
-    text-decoration: underline;
+  .info,
+  .location {
+    cursor: pointer;
+    border-bottom: 2px solid #000000;
+// background-image: linear-gradient(147deg, #000000 0%, #434343 74%);
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .location {
+    width: 100%;
   }
 }
 .works {
@@ -107,10 +152,10 @@ li {
   background-color: #fbfbfb;
   padding-top: 200px;
   position: relative;
-  a{
+  a {
     text-decoration: none;
   }
-  .heading{
+  .heading {
     color: $col-two;
     font-size: 40px;
     position: absolute;
@@ -192,19 +237,47 @@ li {
   padding: 0 30px;
   height: 100vh;
   &__heading {
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
+    padding-top: 2rem;
     h3 {
-      font-size: 100px;
+      text-align: center;
+      font-size: 70px;
       color: $col-two;
+      margin-bottom: 2.5rem;
     }
     p {
-      margin-left: 200px;
+      text-align: center;
+      font-size: 23px;
+      line-height: 1.9rem;
+    }
+  }
+  &__info{
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  &__links{
+    display: flex;
+    justify-content: space-between;
+    width: 40vw;
+    margin: 0 auto;
+    a{
+      text-decoration: underline;
+      color: $col-two;
+      font-weight: 700;
+    }
+    a:hover{
+      color: #FF0000;
+      p{
+      color: #FF0000;
+      }
     }
   }
   .toolStack {
+    margin-top: 3rem auto 0 auto;
     h4 {
-      font-size: 40px;
+      font-size: 30px;
       color: $col-two;
       margin: 0;
     }
@@ -229,8 +302,10 @@ li {
     }
   }
 }
+.contact{
+  height: 92vh;
+}
 .footer {
-  margin-top: 10rem;
   height: 8vh;
   display: flex;
   flex-direction: column-reverse;
@@ -249,7 +324,6 @@ li {
       color: $col-one;
       margin-right: 10px;
     }
-
   }
 }
 
@@ -275,4 +349,12 @@ li {
     border-radius: 50%;
     background-color: $col-two;
   }
+}
+canvas {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  pointer-events: none;
 }
